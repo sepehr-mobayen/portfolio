@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" x-data="app()" :class="{'dark':dark}" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Eliott — Freelance UI/UX Designer and Frontend Developer. Fast, clean and accessible digital products.">
+<meta name="keywords" content="freelance developer, UI designer, portfolio, Tailwind CSS, Alpine.js">
+<meta name="author" content="Eliott">
+<meta property="og:title" content="Eliott — Freelance UI/UX Designer">
+<meta property="og:description" content="I design and build digital products that people love to use.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://eliott.dev">
+<title>Eliott — Freelance UI/UX Designer &amp; Frontend Dev</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { display: ['PT Sans','sans-serif'], body: ['DM Sans','sans-serif'] },
+      colors: { accent: '#FF6B2B', 'accent-light': '#FF8F5C' }
+    }
+  }
+}
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{font-family:'DM Sans',sans-serif}
+h1,h2,h3,h4,h5,h6{font-family:'PT Sans',sans-serif}
+body{transition:background-color .3s,color .3s}
+
+/* noise overlay */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E")}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#1aa9d4;border-radius:99px}
+
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* nav underline animation */
+.nl{position:relative}
+.nl::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:currentColor;transition:width .22s cubic-bezier(.4,0,.2,1)}
+.nl:hover::after,.nl.on::after{width:100%}
+.nl.on{font-weight:500}
+
+/* shimmer button */
+.shimmer{position:relative;overflow:hidden}
+.shimmer::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:rgba(255,255,255,.18);transform:skewX(-20deg);transition:left .4s cubic-bezier(.4,0,.2,1)}
+.shimmer:hover::after{left:160%}
+
+/* photo frames */
+.pf{overflow:hidden;background:#d4d4d8}
+.pf img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* card hover */
+.card-h{transition:transform .28s cubic-bezier(.4,0,.2,1),border-color .18s}
+.card-h:hover{transform:translateY(-4px)}
+
+/* skill tag */
+.stag{transition:border-color .18s}
+
+[x-cloak]{display:none!important}
+</style>
+</head>
+
+<body class="bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 antialiased">
+
+<!-- ═══ NAV ═══ -->
+<header class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+  :class="sc?'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm shadow-black/5':''">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between" aria-label="Main navigation">
+
+    <a href="#hero" class="font-display font-bold text-xl tracking-tight relative z-10">
+      <span class="text-zinc-900 dark:text-white">Sepehr</span><span class="text-zinc-900 dark:text-white"> Mobayen</span>
+    </a>
+
+    <ul class="hidden md:flex items-center gap-8 text-sm" role="list">
+      <li><a href="#services" class="nl text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors" :class="s==='services'?'on !text-zinc-900 dark:!text-white':''">Services</a></li>
+      <li><a href="#work"     class="nl text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors" :class="s==='work'?'on !text-zinc-900 dark:!text-white':''">Work</a></li>
+      <li><a href="#about"   class="nl text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors" :class="s==='about'?'on !text-zinc-900 dark:!text-white':''">About</a></li>
+      <li><a href="#reviews" class="nl text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors" :class="s==='reviews'?'on !text-zinc-900 dark:!text-white':''">Reviews</a></li>
+    </ul>
+
+
+    <div class="flex items-center gap-3">
+      <!-- dark toggle -->
+      <button @click="dark=!dark" class="w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition-colors" :aria-label="dark?'Light mode':'Dark mode'">
+        <svg x-show="!dark" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        <svg x-show="dark"  class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l-.707-.707M6.343 6.343l-.707-.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+      </button>
+      <!-- nav -->
+      <a href="#contact" class="hidden md:inline-flex items-center gap-2 shimmer bg-cyan-800 text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-cyan-500 transition-colors">
+        Contact <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+      </a>
+      <!-- hamburger -->
+      <button @click="mm=!mm" class="md:hidden w-9 h-9 flex items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800" :aria-expanded="mm" aria-label="Toggle menu">
+        <svg x-show="!mm" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg x-show="mm"  class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- mobile menu -->
+  <div x-show="mm" x-cloak
+    x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2"
+    class="md:hidden bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-900">
+    <ul class="flex flex-col px-6 py-5 gap-4 text-sm font-medium" role="list">
+      <li><a href="#services" @click="mm=false" class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors">Services</a></li>
+      <li><a href="#work"     @click="mm=false" class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors">Work</a></li>
+      <li><a href="#about"   @click="mm=false" class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors">About</a></li>
+      <li><a href="#reviews" @click="mm=false" class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors">Reviews</a></li>
+      <li><a href="#blog"    @click="mm=false" class="block text-zinc-700 dark:text-zinc-300 hover:text-accent transition-colors">Blog</a></li>
+      <li class="pt-2 border-t border-zinc-100 dark:border-zinc-900">
+        <a href="#contact" @click="mm=false" class="inline-flex shimmer bg-accent text-white font-medium text-sm px-5 py-2.5 rounded-full">Contact →</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+  <div class="absolute top-1/4 right-0 w-96 h-96  rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-1/4 left-0 w-64 h-64 bg-zinc-200/50 dark:bg-zinc-800/30 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+  <div class="relative z-10 max-w-6xl mx-auto px-6 py-24 w-full">
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+
+      <div>
+        <h1 class="reveal d1 font-display font-bold text-2xl md:text-3xl lg:text-4xl leading-[1.05] tracking-tight text-zinc-900 dark:text-white mb-6">
+         <span class="text-cyan-600">Data Analyst</span><span class="text-zinc-600"> | </span><span class="text-cyan-500">Business Analyst</span>
+        </h1>
+        <p class="reveal d2 text-lg md:text-xl text-zinc-500 dark:text-zinc-400 font-light leading-relaxed max-w-md mb-10">
+          Passionate about uncovering meaning in data, exploring trends to extract impactful insights, and delivering outcomes in order to boost business performance.
+        </p>
+        <div class="reveal d3 flex flex-wrap gap-4">
+          <a href="#services" class="shimmer inline-flex items-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-medium px-7 py-3.5 rounded-full hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors text-sm">
+            WHAT I CAN DO
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </a>
+          <a href="#contact" class="inline-flex items-center gap-2 border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium px-7 py-3.5 rounded-full hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors text-sm">Download CV</a>
+        </div>
+        <div class="reveal d4 flex gap-8 mt-14 pt-8 border-t border-zinc-100 dark:border-zinc-900">
+          <div><p class="font-display font-bold text-3xl text-zinc-900 dark:text-white">
+            	<a href="https://github.com/sepehrxm/" class="image"><img src="icon-git.png" alt=""/></a>
+          </p></div>
+          <div><p class="font-display font-bold text-3xl text-zinc-900 dark:text-white">
+              <a href="mailto:sepehrxm@gmail.com" class="image"><img src="icon-gmail.png" alt=""/></a>
+          </p></div>
+          <div><p class="font-display font-bold text-3xl text-zinc-900 dark:text-white">
+              <a href="https://wa.me/989233309793" class="image"><img src="icon-w.png" alt=""/></a>
+          </p></div>
+        </div>
+      </div>
+
+      <div class="reveal d2 flex justify-center md:justify-end">
+        <div class="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96">
+          <div class="pf w-full h-full rounded-3xl border border-zinc-300 dark:border-zinc-500">
+            <img src="gpt.png" alt="Sepehr" loading="eager" class="bg-white/90 dark:bg-zinc-950/90">
+          </div>
+          <div class="absolute -bottom-4 -left-4 bg-cyan-700 text-white font-display font-bold text-sm px-4 py-2.5 rounded-2xl shadow-lg">ANALYTICS • STRATEGY • PERFORMANCE</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Skills ═══ -->
+<section id="services" class="py-24 bg-zinc-50 dark:bg-zinc-900/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="mb-14">
+      <p class="reveal text-xs font-medium text-cyan-600 tracking-widest uppercase mb-3">What I do</p>
+      <h2 class="reveal d1 font-display font-bold text-3xl md:text-4xl text-zinc-900 dark:text-white">Skills</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-accent/20 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"/></svg>
+</svg>
+
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Business & Retail Analytics</h3>
+         <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Sales & Commercial Analytics</p>
+         <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Sales Performance<br>KPIs, Target Analysis<br>Product & Store-Level Analytics</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Inventory Analytics</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Stock Analysis<br>Inventory Coverage Sell-Through, Turnover, Aging, Stock allocation & Replenishment Analysis</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Customer Analytics</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Stock Analysis<br>Customer Segmentation, RFM analysis, Customer Behavior, Retention & Credit-Voucher Analytics</p>
+      </article>
+
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-zinc-200 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"/></svg>
+</svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Data Analysis & Programming</h3>
+        <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">SQL</p>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Microsoft SQL Server<br>PostreSQL<br>SQLite</p>
+        <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Python</p>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Pandas / Numpy<br>Matplotlib / Seaborn<br> Reportlab / Schedule / Smtplib</p>
+        <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">R, Stata & EViews</p>
+        <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Regressions / Modeling<br>Statistical Analytics</p>
+      </article>
+
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-zinc-200 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Business Intelligence & Visualization</h3>
+         <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Power BI</p>
+         <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Interactive Dashboards<br>Modeling<br>PowerQuery / DAX<br>Report Server Management</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Excel</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Advanced Transformation / PowerQuery<br>Pivots & Dashboards<br>Interactive Visualization</p>
+      </article>
+
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-zinc-200 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Data Engineering & Automation</h3>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Pipelines & Integration</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">ETL / Validation<br>API Extraction<br>Automated Error Handling</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Process Automation</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Automating Data Collection<br>Schedular Reporting<br>Automated Workflows</p>
+      </article>
+
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-zinc-200 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Market Analysis & Strategic Insights</h3>
+         <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Market Research</p>
+         <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Monitoring Market Trends<br>Competitor Activity<br>Pricing & Promotional Effectiveness<br>Consumer Demand Insights</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Competitive Intelligence</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Competitor Benchmarking<br>Identifying Growth Opportunities<br>Identifying Patterns</p>
+      </article>
+           
+      <article class="reveal d1 card-h group bg-white dark:bg-zinc-800 rounded-2xl p-8 border border-zinc-800  hover:border-cyan-600">
+        <div class="w-12 h-12 flex items-center justify-center bg-zinc-800 dark:bg-zinc-700 rounded-xl mb-6 group-hover:bg-zinc-200 transition-colors">
+          <svg class="w-6 h-6 text-sky-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"/></svg>
+        </div>
+        <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-3">Version Control & Business Systems</h3>
+         <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Git & GitHub</p>
+         <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Version control & Collaborative Development</p>
+          <p class="text-md font-bold text-zinc-500 dark:text-zinc-400 leading-relaxed">Jira / Microsoft Dynamics</p>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">Workflow Tracking & Project C oordination</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ projects ═══ -->
+<section id="work" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14">
+      <div>
+        <p class="reveal text-xs font-medium text-cyan-600 tracking-widest uppercase mb-3">Projects</p>
+        <h2 class="reveal d1 font-display font-bold text-3xl md:text-4xl text-zinc-900 dark:text-white">Selected work</h2>
+      </div>
+      <a href="https://github.com/sepehrxm/" class="reveal d1 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-cyan-500 transition-colors self-start sm:self-auto nl">More projects →</a>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <article class="card-h reveal d1 group rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-800 dark:border-zinc-500 hover:border-cyan-600 md:row-span-2">
+        <div class="pf w-full h-64 md:h-80">
+          <img src="python.png" alt="python" loading="lazy">
+        </div>
+        <div class="p-7">
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">Python</span>
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">CoinGecko API</span>
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">Google Trends</span>
+          </div>
+          <a>
+            <h3 class="font-display font-bold text-2xl text-zinc-900 dark:text-white mb-2">Automated Reporting Pipeline</h3>
+          </a>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-5">
+            Fully automated weekly reporting system for tracking the top five cryptocurrencies by market capitalization. It fetches price data, Google Trends interest, computes KPIs, generates visualizations, and produces a structured PDF report, which is automatically sent via email on schedule.
+          </p>
+          <a href="https://github.com/sepehrxm/Python_Portfolio_Project/" class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-900 dark:text-white nl">View Project <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+        </div>
+      </article>
+
+      <article class="card-h reveal d2 group rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-800 dark:border-zinc-500 hover:border-cyan-600">
+        <div class="pf w-full h-48">
+          <img src="bi.png" alt="Dashboard" loading="lazy">
+        </div>
+        <div class="p-6">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">Power BI</span>
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">2025 Stack Overflow Developer Survey</span>
+          </div>
+          <a>
+            <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-1.5">Stack Overflow Survey Dashboard</h3>
+          </a>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">Interactive Power BI dashboard analyzing the 2025 Stack Overflow Developer Survey. The dashboard provides a deep dive into data-focused careers, enabling exploration of learning paths, tools, demographics, and career trends within the developer community.</p>
+          <a href="https://tinyurl.com/n79978rw" class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-900 dark:text-white nl">View Project →</a>
+        </div>
+      </article>
+
+      <article class="card-h reveal d3 group rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-900 border border-zinc-800 dark:border-zinc-500 hover:border-cyan-600">
+        <div class="pf w-full h-48">
+          <img src="erd.png" alt="Diagram" loading="lazy">
+        </div>
+        <div class="p-6">
+          <div class="flex flex-wrap gap-2 mb-3">
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">PostgreSQL</span>
+            <span class="text-xs bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-full">Contoso</span>
+          </div>
+          <a href="case-study.html">
+            <h3 class="font-display font-bold text-xl text-zinc-900 dark:text-white mb-1.5">Retail Intelligence with SQL</h3>
+          </a>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">Exploring a sample dataset built by Microsoft to simulate a global retail business including data on sales, customers, products, and regions to segment customers, track product performance, and identify growth opportunities.</p>
+          <a href=case-study.html" class="inline-flex items-center gap-1.5 text-sm font-medium text-zinc-900 dark:text-white nl">View case study →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about" class="py-24 bg-zinc-50 dark:bg-zinc-900/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+
+      <div class="reveal order-2 md:order-1">
+        <div class="pf w-full aspect-square max-w-sm mx-auto rounded-3xl">
+          <img src="test.jpg" alt="Eliott" loading="lazy">
+        </div>
+      </div>
+
+      <div class="order-1 md:order-2">
+        <p class="reveal text-xs font-medium text-cyan-600 tracking-widest uppercase mb-3">About me</p>
+        <h2 class="reveal d1 font-display font-bold text-4xl md:text-5xl text-zinc-900 dark:text-white leading-tight mb-6">A bit about<br>who I am</h2>
+        <p class="reveal d2 text-zinc-500 dark:text-zinc-400 leading-relaxed mb-4">
+          With an academic background in Economics and a technical background in programming, I approach analytics from both sides — understanding the logic behind a problem while being able to investigate it through data.<br>My work spans business intelligence, performance analysis, customer and product analytics, and data-driven decision making, turning raw data into structured analysis and meaningful insight.<br>I’m particularly interested in analytical problems where understanding the business context is just as important as the technical analysis itself.
+        </p>
+        <p class="reveal d3 text-zinc-500 dark:text-zinc-400 leading-relaxed mb-8">
+          I believe great interfaces are invisible — they get out of the user's way. My work is fast, accessible and built to last. When I'm not coding, you'll find me hiking or hunting for a good espresso.
+        </p>
+        <div class="reveal d4">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact" class="py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="bg-zinc-900 dark:bg-zinc-800 rounded-3xl p-10 md:p-16 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true"></div>
+      <div class="absolute bottom-0 left-0 w-40 h-40 bg-accent/10 rounded-full blur-2xl pointer-events-none" aria-hidden="true"></div>
+
+      <div class="relative z-10 grid md:grid-cols-2 gap-12 items-start">
+
+        <div>
+          <p class="reveal text-xs font-medium text-cyan-600 tracking-widest uppercase mb-3">Get in touch</p>
+          <h2 class="reveal d1 font-display font-bold text-3xl md:text-4xl text-white leading-tight mb-5">Let's work<br>together</h2>
+          <p class="reveal d2 text-zinc-400 leading-relaxed mb-8">I’m interested in opportunities where data can help explain performance, uncover opportunities, and support better decisions. Whether it’s a project, analytical challenge, or a business problem worth investigating — let’s talk.</p>
+
+          <div class="reveal d3 flex flex-col gap-4">
+            <a href="mailto:sepehrxm@gmail.com" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-sky-600 transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              </span>
+              <span class="text-sm">sepehrxm@gmail.com</span>
+            </a>
+            <a href="tel:+989233309793" rel="noopener noreferrer" target="_blank" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-sky-600 transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"/></svg>
+              </span>
+              <span class="text-sm">+989233309793</span>
+            </a>
+            <a href="https://github.com/sepehrxm/" rel="noopener noreferrer" target="_blank" class="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+              <span class="w-9 h-9 flex items-center justify-center bg-zinc-800 rounded-lg group-hover:bg-sky-600 transition-colors shrink-0">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              </span>
+              <span class="text-sm">github.com/sepehrxm</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="reveal d2">
+          <form action="#" method="POST" novalidate>
+            <div class="flex flex-col gap-4">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="fname" class="block text-xs font-medium text-zinc-400 mb-1.5">Name <span aria-hidden="true">*</span></label>
+                  <input type="text" id="fname" name="name" placeholder="Name" required autocomplete="name"
+                    class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 placeholder-zinc-600 focus:outline-none focus:border-cyan-700 transition-colors">
+                </div>
+                <div>
+                  <label for="femail" class="block text-xs font-medium text-zinc-400 mb-1.5">Email <span aria-hidden="true">*</span></label>
+                  <input type="email" id="femail" name="email" placeholder="Username@company.com" required autocomplete="email"
+                    class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 placeholder-zinc-600 focus:outline-none focus:border-cyan-700 transition-colors">
+                </div>
+              </div>
+              <div>
+                <label for="fsubject" class="block text-xs font-medium text-zinc-400 mb-1.5">Subject</label>
+                <input type="text" id="fsubject" name="subject" placeholder="Project inquiry"
+                  class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 placeholder-zinc-600 focus:outline-none focus:border-cyan-700 transition-colors">
+              </div>
+              <div>
+                <label for="fmessage" class="block text-xs font-medium text-zinc-400 mb-1.5">Message <span aria-hidden="true">*</span></label>
+                <textarea id="fmessage" name="message" rows="4" placeholder="Tell me about your project..." required
+                  class="w-full bg-zinc-800 border border-zinc-700 text-white text-sm rounded-xl px-4 py-3 placeholder-zinc-600 focus:outline-none focus:border-cyan-700 transition-colors resize-none"></textarea>
+              </div>
+              <button type="submit" class="shimmer w-full bg-cyan-600 text-white font-display font-bold text-sm py-3.5 rounded-xl hover:bg-emerald-500 transition-colors">
+                Send message →
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-zinc-100 dark:border-zinc-900">
+  <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-zinc-400">© <span id="yr"></span> SM. All rights reserved. <br> <a  target="_blank" class="font-bold"></a><a  target="_bl ank" class="font-bold"></a></p>
+    <p class="text-xs text-zinc-500">Built with
+      <a href="https://tailwindcss.com" rel="noopener noreferrer" target="_blank" class="hover:text-accent transition-colors">Tailwind CSS</a>
+      &amp;
+      <a href="https://alpinejs.dev" rel="noopener noreferrer" target="_blank" class="hover:text-accent transition-colors">Alpine.js</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+function app() {
+  return {
+    dark: false,
+    mm: false,
+    sc: false,
+    s: 'hero',
+
+    init() {
+      // dark mode
+      this.dark = localStorage.getItem('theme') === 'dark' ||
+        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      this.$watch('dark', v => localStorage.setItem('theme', v ? 'dark' : 'light'));
+
+      // scroll
+      window.addEventListener('scroll', () => {
+        this.sc = window.scrollY > 20;
+        this.updateSection();
+      }, { passive: true });
+
+      // reveal
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+      // year
+      document.getElementById('yr').textContent = new Date().getFullYear();
+    },
+
+    updateSection() {
+      const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 60;
+      if (atBottom) { this.s = 'contact'; return; }
+      const ids = ['contact','blog','reviews','about','work','services','hero'];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 130) { this.s = id; return; }
+      }
+    }
+  }
+}
+</script>
+
+</body>
+</html>
